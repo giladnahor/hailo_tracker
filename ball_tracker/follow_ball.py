@@ -34,7 +34,7 @@ class FollowBall(Node):
         self.declare_parameter("angular_chase_multiplier", 0.7)
         self.declare_parameter("forward_chase_speed", 0.1)
         self.declare_parameter("search_angular_speed", 0.5)
-        self.declare_parameter("max_size_thresh", 0.1)
+        self.declare_parameter("max_size_thresh", 0.2)
         self.declare_parameter("filter_value", 0.9)
 
 
@@ -55,7 +55,7 @@ class FollowBall(Node):
     def timer_callback(self):
         msg = Twist()
         if (time.time() - self.lastrcvtime < self.rcv_timeout_secs):
-            self.get_logger().info('Target: {}'.format(self.target_val))
+            self.get_logger().info('Target: Angle {} Dist {}'.format(self.target_val, self.target_dist))
             print(self.target_dist)
             if (self.target_dist < self.max_size_thresh):
                 msg.linear.x = self.forward_chase_speed

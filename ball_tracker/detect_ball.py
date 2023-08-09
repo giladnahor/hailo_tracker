@@ -66,6 +66,7 @@ class DetectBall(Node):
         if(self.tuning_mode):
             proc.create_tuning_window(self.tuning_params)
 
+
     def callback(self,data):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")

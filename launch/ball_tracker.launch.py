@@ -23,6 +23,12 @@ def generate_launch_description():
         default_value='false',
         description='Doesn\'t run the follow component. Useful for just testing the detections.')
     
+    use_hailo = LaunchConfiguration('use_hailo')
+    use_hailo_dec = DeclareLaunchArgument(
+        'use_hailo',
+        default_value='true',
+        description='Uses the Hailo AI accelerator for the detection. (e.g. with manually published detections)')
+    
     follow_only = LaunchConfiguration('follow_only')
     follow_only_dec = DeclareLaunchArgument(
         'follow_only',
@@ -62,12 +68,20 @@ def generate_launch_description():
 
 
 
-    detect_node = Node(
+    # detect_node = Node(
+    #         package='ball_tracker',
+    #         executable='detect_ball',
+    #         parameters=[params_file, {'tuning_mode': tune_detection}],
+    #         remappings=[('/image_in',image_topic)],
+    #         condition=UnlessCondition(follow_only or use_hailo)
+    #      )
+    
+    hailo_detect_node = Node(
             package='ball_tracker',
-            executable='detect_ball',
+            executable='detect_hailo',
             parameters=[params_file, {'tuning_mode': tune_detection}],
             remappings=[('/image_in',image_topic)],
-            condition=UnlessCondition(follow_only)
+            condition=UnlessCondition(follow_only or not use_hailo)
          )
 
     detect_3d_node = Node(
@@ -97,7 +111,9 @@ def generate_launch_description():
         image_topic_dec,
         cmd_vel_topic_dec,
         enable_3d_tracker_dec,
-        detect_node,
+        use_hailo_dec,
+        # detect_node,
         detect_3d_node,
-        follow_node,    
+        follow_node,
+        hailo_detect_node,  
     ])

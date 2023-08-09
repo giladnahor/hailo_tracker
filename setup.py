@@ -13,6 +13,8 @@ setup(
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', glob('launch/*launch.py')),
         ('share/' + package_name + '/config', glob('config/*.yaml')),
+        ('share/' + package_name + '/config', glob('config/*.hef')),
+        ('share/' + package_name + '/config', glob('config/*.json')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -26,6 +28,7 @@ setup(
             'detect_ball = ball_tracker.detect_ball:main',
             'detect_ball_3d = ball_tracker.detect_ball_3d:main',
             'follow_ball = ball_tracker.follow_ball:main',
+            'detect_hailo = ball_tracker.detect_hailo:main',
         ],
     },
 )
